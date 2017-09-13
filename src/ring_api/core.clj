@@ -28,7 +28,7 @@
         (seq? (jdbc/query db-spec [(str "select * from " table-name)]))
         (catch Exception e
           (println (str "Table doesn't exist " table-name ", creating"))
-          (jdbc/query db-spec [(str "create table " table-name " (id serial, count int)")]))))
+          (jdbc/db-do-commands db-spec (jdbc/create-table-ddl table-name [[:id :serial] [:count :int]])))))
 
 (defn increment-counter []
       (let [old-count (:count (jdbc/get-by-id db-spec :counter 1))]
